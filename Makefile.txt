@@ -1,0 +1,18 @@
+AS := as
+LD := ld
+ASFLAGS := -c -g --gdwarf-2
+LDFLAGS := -static
+
+sources := $(wildcard *.s)
+targets := $(sources:.s=)
+
+all: $(targets)
+.PHONY: all
+
+$(targets): %: %.s defs.h
+	$(AS) $(ASFLAGS) $< -o $@.o
+	$(LD) $(LDFLAGS) -o $@ $@.o
+
+.PHONY: clean
+clean:
+	rm -f *.o $(targets)
